@@ -1,0 +1,112 @@
+   if (isBottomSheetOpen) {
+                  Navigator.pop(context);
+                  isBottomSheetOpen = false;
+                  cubit.icon = Icons.edit;
+                  cubit.setIcon();
+                } else {
+                  cubit.icon = Icons.add;
+                  cubit.setIcon();
+                  scaffoldKey.currentState!.showBottomSheet((context) {
+                    return GestureDetector(
+                      onHorizontalDragCancel: () {
+                        isBottomSheetOpen = !isBottomSheetOpen;
+                        cubit.icon = Icons.edit;
+                        cubit.setIcon();
+                        return;
+                      },
+                      child: Form(
+                        key: formKey,
+                        child: Container(
+                          color: Colors.white60,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(13.0),
+                                child: defaultFormField(
+                                    validate: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'This field is required';
+                                      }
+                                      return null;
+                                    },
+                                    controller: titleController,
+                                    type: TextInputType.text,
+                                    label: 'Title',
+                                    prefix: Icons.file_copy),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: defaultFormField(
+                                  validate: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'This field is required';
+                                    }
+                                    return null;
+                                  },
+                                  readOnly: true,
+                                  controller: dateController,
+                                  type: TextInputType.number,
+                                  label: 'Date',
+                                  prefix: Icons.calendar_today,
+                                  onTap: () {
+                                    showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.parse('2022-12-01'),
+                                    ).then((value) {
+                                      dateController.text =
+                                          DateFormat.yMMMd().format(value!);
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: defaultFormField(
+                                    validate: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'This field is required';
+                                      }
+                                      return null;
+                                    },
+                                    readOnly: true,
+                                    controller: timeController,
+                                    type: TextInputType.number,
+                                    label: 'Time',
+                                    prefix: Icons.punch_clock_outlined,
+                                    onTap: () {
+                                      showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now(),
+                                      ).then((value) {
+                                        timeController.text =
+                                            value!.format(context);
+                                      });
+                                    }),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+                  if (dateController.text.isNotEmpty &&
+                      titleController.text.isNotEmpty &&
+                      timeController.text.isNotEmpty) {
+                    cubit
+                        .insertIntoDatabase(
+                            title: titleController.text,
+                            date: dateController.text,
+                            time: timeController.text)
+                        .then((value) {
+                      cubit.setIcon();
+                      cubit.icon = Icons.edit;
+                    }).then((value) {
+                      Navigator.pop(context);
+                    });
+                  }
+                  cubit.icon = Icons.add;
+                  isBottomSheetOpen = true;
+                }
