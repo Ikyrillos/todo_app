@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:page_route_transition/page_route_transition.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todo_app_am/presentaion_layer/screens/add_task_screen.dart';
 part 'appcubit_state.dart';
 
 class AppCubit extends Cubit<AppStates> {

@@ -246,11 +246,25 @@ Widget taskItem(Map item, BuildContext context, int index, int key,
               Radius.circular(10),
             ),
           ),
-          child: const Center(
-            child: Text(
-              'Delete',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+          child: Center(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]),
           ),
         ),
       ),
